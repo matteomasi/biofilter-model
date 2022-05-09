@@ -73,4 +73,4 @@ A MATLAB version (`plots.m`) is also available in the same folder.
 
 ## References
 
-<a id="1">[1]</a> Masi, M., Guidi Nissim, W., Pandolfi, C., Azzarello, E., Mancuso, S. (2022). Modelling botanical biofiltration of indoor air streams contaminated by volatile organic compounds. *Journal of Hazardous Materials*, 422, 126875. DOI: [10.1016/j.jhazmat.2021.126875](https://doi.org/10.1016/j.jhazmat.2021.126875)
+<a id="1">[1]</a> Masi M., Guidi Nissim W., Pandolfi C., Azzarello E., Mancuso S. (2022). Modelling botanical biofiltration of indoor air streams contaminated by volatile organic compounds. *Journal of Hazardous Materials*, 422, 126875. DOI: [10.1016/j.jhazmat.2021.126875](https://doi.org/10.1016/j.jhazmat.2021.126875)
