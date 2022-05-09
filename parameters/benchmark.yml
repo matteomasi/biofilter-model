@@ -1,0 +1,238 @@
+# BIOFILTER-MODEL
+# Model Parameters - Configuration File
+#
+#   (c) Matteo M. 2022
+#
+#	Comments: This simulation reproduces the results of Shareefdeen and Baltzis (1994)
+
+
+# ################################################
+# MODEL PARAMETERS
+# ################################################
+
+# Column length (m) 
+L: 0.686
+
+# Biofilter surface (m^2) 
+A: 1.0
+
+# Air flow-rate (m3/h)
+Q_m3h: 4.9
+
+# Gas phase longitudinal dispersion coefficient (m^2 / s)
+DL: 5.0e-4
+
+# Species molar weight (for ppb to g/m3 conversion)
+mw: 100.0
+
+# VOC diffusion coefficient in the biofilm (m^2 / s) 
+Di: 2.0e-10
+
+# Oxygen diffusion coefficient in the biofilm (m^2 /s) 
+Do: 4.7e-10
+
+# Biofilm thickness (um) 
+delta: 37.6
+
+# Distribution coefficient of contaminant air/biofilm 
+mi: 0.27
+
+# Distribution coefficient oxygen air/biofilm
+mo: 34.4
+
+# Monod kinetic parameters
+mc:
+# umax,i   Saturation specific growth rate (1/s)  
+- 4.17e-4
+# km,i     Reaction rate, species-i        (g m-3)
+- 11.03
+# ko,i     Reaction rate oxygen, specie i  (g m-3) 
+- 0.26
+# KI,i     Inibition constant              (g m-3) 
+- 78.94
+# Xv       Biofilm density (g/m3) 
+- 100000.0
+# Y        Yield coefficient of a culture on VOC (g/g) 
+- 0.708
+# Yo       Yield coefficient of a culture on oxygen (g/g) 
+- 0.341
+
+# Biofilm surface area per unit volume of soil (m^2 / m^3)
+As: 133.0
+
+# Percentage coverage of the particle by the biofilm (-)
+alpha: 0.3
+
+# Soil porosity (-) 
+p: 0.3
+
+# Distribution coeff. air/solid (-)ì
+mi_s: 0.02
+
+# Mass transfer coeff. liquid to solid (1/s) 
+ka_l: 0.0
+
+# Mass transfer coeff. gas to solid (1/s)
+ka_g: 3.2e-4
+
+
+# MESH settings
+# Number of mesh elements for advection-dispersion
+num_el_x: 25
+
+# Number of mesh elements for biofilm model
+num_el_z: 100
+
+
+# COUPLING TIME-STEPPING settings
+dt1: 5
+t_end1: 100
+dt2: 30
+t_end2: 7200
+dt3: 30
+t_end3: 86400
+
+
+# ################################################
+# INITIAL VALUES AND BOUNDARY VALUES
+# ################################################
+
+# CONSTANT INPUT CONCENTRATIONS
+####
+
+# Initial VOC concentration in the column (g/m3)
+c_0: 0.0
+# Initial Oxygen concentration in the column (g/m3)
+co_0: 0.0
+# Inlet concentration (Left boundary condition) (g/m3) - Not used when use_ts:true or mixing_model:true
+c_L: 1.65
+# Inlet Oxygen concentration (Left boundary condition) (g/m3)
+co_L: 275.0
+
+# INPUT TIME-SERIES
+####
+
+# Use time-series as input
+use_ts: false
+
+# Input time-series	(only used when use_ts: true)
+# Format: .csv file with the following colums
+# Time (date),tVOC (ppb) 
+csv_file: data/data_in.csv
+
+# Validation time-series (only used when use_ts: true)
+# Format: .csv file with the following colums
+# Time (date),tVOC (ppb) 
+csv_file_out: data/data_validation.csv
+
+# Smooth input data using moving average
+smooth: false
+
+# Number of samples in the moving window
+smooth_samples: 10
+
+
+# MIXING MODEL PARAMETERS
+####
+
+# Use mixing model
+mixing_model: false
+
+# Room volume m3 (used only if mixing_model: true)
+V: 120.0
+
+# HVAC external air flow rate (m3/h) - used when use_ts_mixing:false
+Qext_m3h: 100.0
+
+# External contaminant concentration (ug/m3) - used when use_ts_mixing:false
+Cext: 50.0
+
+# Indoor contaminant influx (mg/h) - used when use_ts_mixing:false
+F: 30.0
+
+# Use time series for mixing model input external concentration (Qext, Cext)
+use_ts_mixing_ext: false
+
+# Use time series for mixing model indoor influx (F)
+use_ts_mixing_F: false
+
+# Input time-series (only used when use_ts_mixing_ext: true)
+# Format: .csv file with the following colums
+# Time (hours), Qext (m3/h)
+csv_file_mixing_Qext: data/Qext.csv
+
+# Time (hours), Cext (ug/m3)
+csv_file_mixing_Cext: data/Cext.csv
+
+# Input time-series (only used when use_ts_mixing_F: true)
+# Format: .csv file with the following colums
+# Time (hours), F (mg/h)  
+csv_file_mixing_F: data/F.csv
+
+# Smooth F input time series
+smooth_F: false
+
+# Number of samples in the moving window
+smooth_F_samples: 10
+
+# ################################################
+# OUTPUT SETTINGS
+# ################################################
+
+# Plot results (must be false when running the model with docker)
+plots: false
+
+# Export hdf5 output file
+export_h5: true
+
+# Output folder
+output_folder: results/
+
+# Export transport model profiles
+export_profiles: true
+
+# Export biofilm model profiles
+export_bm_profiles: true
+
+# Export biofilm model profiles at z == z_profile (m)
+z_profile: 0.343
+
+# Export profiles every x steps
+exp_profiles_step: 50
+
+
+# ################################################
+# SOLVER SETTINGS
+# ################################################
+
+# FEniCS settings
+log_active: true
+log_level: 30
+
+
+# Number of CPUs for parallel computations (bm: biofilm model, tm: transport model)
+num_proc_bm: 6
+num_proc_tm: 2
+
+
+# Biofilm model non-linear solver parameters
+snes_solver_parameters:
+  nonlinear_solver: snes
+  snes_solver:
+    error_on_nonconvergence: false
+    maximum_iterations: 600
+    report: false
+    sign: nonnegative
+
+# Transport model settings
+solver_params:
+  drawplot: false
+  output:
+    print_statistics: false
+    statistics: false
+  timestepping:
+    absolute_tolerance: 1.0e-05
+    adaptive: true
+    convergence_criterion: absolute
+  verbose: false
+
